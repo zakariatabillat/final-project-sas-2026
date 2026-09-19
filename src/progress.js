@@ -81,6 +81,19 @@ function enregistrerResultat(id, resultat) {
 }
 
 
+function rechercherApprenant(recherche) {
+
+    const rechercheNormalisee = normaliserNom(recherche);
+
+    const resultats = studentsData.filter(function(student) {
+        return normaliserNom(student.name).includes(rechercheNormalisee);
+    });
+
+    return resultats;
+}
+
+
+
 function calculerProgression(id) {
 
     const student = studentsData.find(function(student) {
@@ -247,5 +260,18 @@ function afficherTableauDeBord() {
 
 
 
+
+
+module.exports = {
+    normaliserNom,
+    validerResultat,
+    ajouterApprenant,
+    enregistrerResultat,
+    rechercherApprenant,
+    calculerProgression,
+    filtrerParNiveau,
+    trierParProgression,
+    afficherTableauDeBord
+};
 
 
