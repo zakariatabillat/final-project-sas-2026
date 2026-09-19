@@ -108,6 +108,141 @@ function calculerProgression(id) {
     return progression;
 }
 
+function filtrerParNiveau(niveau) {
+
+    const resultats = [];
+
+    for (let student of studentsData) {
+
+        const progression = calculerProgression(student.id);
+
+        let niveauStudent;
+
+        if (progression >= 80) {
+            niveauStudent = "Solid";
+        } else if (progression >= 50) {
+            niveauStudent = "In Progress";
+        } else {
+            niveauStudent = "Needs Reinforcement";
+        }
+
+        if (niveauStudent === niveau) {
+            resultats.push(student);
+        }
+    }
+
+    return resultats;
+}
+
+
+function trierParProgression(students) {
+
+    const resultat = [...students];
+
+    resultat.sort(function(a, b) {
+        return calculerProgression(b.id) - calculerProgression(a.id);
+    });
+
+    return resultat;
+}
+
+
+
+
+function afficherTableauDeBord() {
+
+    const totalApprenants = studentsData.length;
+
+    let sommeProgressions = 0;
+    let solid = 0;
+    let inProgress = 0;
+    let needsReinforcement = 0;
+
+    for (let student of studentsData) {
+
+        const progression = calculerProgression(student.id);
+
+        sommeProgressions += progression;
+
+        if (progression >= 80) {
+            solid++;
+        } else if (progression >= 50) {
+            inProgress++;
+        } else {
+            needsReinforcement++;
+        }
+    }
+
+    let moyenne = 0;
+
+    if (totalApprenants > 0) {
+        moyenne = sommeProgressions / totalApprenants;
+    }
+
+    const apprenantsTries = trierParProgression(studentsData);
+
+    console.log("========== TABLEAU DE BORD ==========");
+
+    console.log("Total apprenants :", totalApprenants);
+    console.log("Moyenne du groupe :", moyenne.toFixed(2) + "%");
+
+    console.log("Solid :", solid);
+    console.log("In Progress :", inProgress);
+    console.log("Needs Reinforcement :", needsReinforcement);
+
+    console.log("\n--- Progression des apprenants ---");
+
+    for (let student of apprenantsTries) {
+
+        const progression = calculerProgression(student.id);
+
+        console.log(
+            student.name,
+            "→",
+            progression.toFixed(2) + "%"
+        );
+    }
+
+    console.log("\n--- Jours et challenges manquants ---");
+
+    for (let student of studentsData) {
+
+        const joursEnregistres = student.results.map(function(result) {
+            return result.jour;
+        });
+
+        const joursManquants = [];
+
+        for (let jour = 1; jour <= 7; jour++) {
+
+            if (!joursEnregistres.includes(jour)) {
+                joursManquants.push(jour);
+            }
+        }
+
+        const challengesManquants = [];
+
+        for (let result of student.results) {
+
+            if (!result.challengeTermine) {
+                challengesManquants.push(result.jour);
+            }
+        }
+
+        console.log(student.name);
+
+        console.log(
+            "Jours manquants :",
+            joursManquants
+        );
+
+        console.log(
+            "Challenges manquants :",
+            challengesManquants
+        );
+    }
+}
+
 
 
 
