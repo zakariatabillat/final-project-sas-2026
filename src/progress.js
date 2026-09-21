@@ -1,19 +1,18 @@
 const studentsData = require("./data.js");
 
-console.log(studentsData);
 
 
 
 function normaliserNom(nom) {
-return nom.trim().replace(/\s+/g, " ").toLowerCase();
+    return nom.trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 
 
 function validerResultat(resultat) {
     if (resultat.jour < 1 || resultat.jour > 7) {
-         console.log("Erreur : le jour doit être compris entre 1 et 7.");
-         return false;
+        console.log("Erreur : le jour doit être compris entre 1 et 7.");
+        return false;
     }
 
     if (resultat.exercicesTermines > resultat.totalExercices) {
@@ -28,14 +27,14 @@ function validerResultat(resultat) {
 
 function ajouterApprenant(id, name, city) {
 
-    const existingStudent = studentsData.find(function(student) {
+    const existingStudent = studentsData.find(function (student) {
         return student.id === id;
     });
 
     if (existingStudent) {
         return false;
     }
-    
+
 
     studentsData.push({
         id: id,
@@ -51,7 +50,7 @@ function ajouterApprenant(id, name, city) {
 
 function enregistrerResultat(id, resultat) {
 
-    const student = studentsData.find(function(student) {
+    const student = studentsData.find(function (student) {
         return student.id === id;
     });
 
@@ -63,7 +62,7 @@ function enregistrerResultat(id, resultat) {
         return false;
     }
 
-    const existingResult = student.results.find(function(result) {
+    const existingResult = student.results.find(function (result) {
         return result.jour === resultat.jour;
     });
 
@@ -85,7 +84,7 @@ function rechercherApprenant(recherche) {
 
     const rechercheNormalisee = normaliserNom(recherche);
 
-    const resultats = studentsData.filter(function(student) {
+    const resultats = studentsData.filter(function (student) {
         return normaliserNom(student.name).includes(rechercheNormalisee);
     });
 
@@ -96,7 +95,7 @@ function rechercherApprenant(recherche) {
 
 function calculerProgression(id) {
 
-    const student = studentsData.find(function(student) {
+    const student = studentsData.find(function (student) {
         return student.id === id;
     });
 
@@ -152,7 +151,7 @@ function trierParProgression(students) {
 
     const resultat = [...students];
 
-    resultat.sort(function(a, b) {
+    resultat.sort(function (a, b) {
         return calculerProgression(b.id) - calculerProgression(a.id);
     });
 
@@ -220,7 +219,7 @@ function afficherTableauDeBord() {
 
     for (let student of studentsData) {
 
-        const joursEnregistres = student.results.map(function(result) {
+        const joursEnregistres = student.results.map(function (result) {
             return result.jour;
         });
 
